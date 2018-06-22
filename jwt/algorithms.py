@@ -43,18 +43,18 @@ def get_default_algorithms():
         'none': NoneAlgorithm(),
         'HS256': HMACAlgorithm(HMACAlgorithm.SHA256),
         'HS384': HMACAlgorithm(HMACAlgorithm.SHA384),
-        'HS512': HMACAlgorithm(HMACAlgorithm.SHA512)
+        'HS512': HMACAlgorithm(HMACAlgorithm.SHA512),
+        'RS256': RSAAlgorithm(RSAAlgorithm.SHA256),
+        'RS384': RSAAlgorithm(RSAAlgorithm.SHA384),
+        'RS512': RSAAlgorithm(RSAAlgorithm.SHA512),
+        'ES256': ECAlgorithm(ECAlgorithm.SHA256),
+        'ES384': ECAlgorithm(ECAlgorithm.SHA384),
+        'ES521': ECAlgorithm(ECAlgorithm.SHA512),
+        'ES512': ECAlgorithm(ECAlgorithm.SHA512),  # Backward compat for #219 fix
     }
 
     if has_crypto:
         default_algorithms.update({
-            'RS256': RSAAlgorithm(RSAAlgorithm.SHA256),
-            'RS384': RSAAlgorithm(RSAAlgorithm.SHA384),
-            'RS512': RSAAlgorithm(RSAAlgorithm.SHA512),
-            'ES256': ECAlgorithm(ECAlgorithm.SHA256),
-            'ES384': ECAlgorithm(ECAlgorithm.SHA384),
-            'ES521': ECAlgorithm(ECAlgorithm.SHA512),
-            'ES512': ECAlgorithm(ECAlgorithm.SHA512),  # Backward compat for #219 fix
             'PS256': RSAPSSAlgorithm(RSAPSSAlgorithm.SHA256),
             'PS384': RSAPSSAlgorithm(RSAPSSAlgorithm.SHA384),
             'PS512': RSAPSSAlgorithm(RSAPSSAlgorithm.SHA512)
@@ -401,3 +401,6 @@ if has_crypto:
                 return True
             except InvalidSignature:
                 return False
+else:
+    from .contrib.algorithms.py_ecdsa import ECAlgorithm
+    from .contrib.algorithms.pycrypto import RSAAlgorithm
